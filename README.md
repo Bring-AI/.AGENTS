@@ -1,5 +1,7 @@
 # .AGENTS
 
+**简体中文** | [English](README.en.md)
+
 **一个项目，多个 agent；公共规则保持简短，角色知识各有归属。**
 
 `.AGENTS` 是一套可放进任意 Git 项目的目录约定，以及一个零第三方依赖的 Python 工具。使用 `.AGENTS/<ROLE>/` 管理不同角色的 **memory** 和 **skill**，让接手任务的 agent 可以找到职责、已知事实和可复用工作方法。
