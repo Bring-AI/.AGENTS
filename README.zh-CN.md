@@ -14,7 +14,7 @@
 
 | 场景 | 单靠 AGENTS.md 的局限 | 本项目的补充 |
 | --- | --- | --- |
-| 架构、开发和评审操作同一份代码 | 文件路径范围不等于职责范围 | 每个角色独立的 `ROLE.md` |
+| 架构、开发和评审操作同一份代码 | 文件路径范围不等于职责范围 | 每个角色独立的 `AGENTS.md` |
 | 每次会话都重新探索项目 | Markdown 入口没有自动记忆写回、过期和归档机制 | 有来源、日期和状态的 memory |
 | 所有经验都堆进入口文件 | 无关历史增加上下文开销，规则更难维护 | 摘要入口与按需加载的记录、技能 |
 | 多个 agent 同时工作 | 文本约定不提供调度、文件锁或事务 | 明确所有权与交接约定，配合 Git/worktree |
@@ -32,7 +32,7 @@ your-project/
 │   ├── _shared/
 │   │   └── CONTEXT.md             # 跨角色的已确认事实
 │   ├── architect/
-│   │   ├── ROLE.md                # 职责、边界与交接
+│   │   ├── AGENTS.md                # 职责、边界与交接
 │   │   ├── memory/
 │   │   │   ├── MEMORY.md          # 当前摘要与记录索引
 │   │   │   └── records/*.md       # 决策与经验，按需读取
@@ -82,7 +82,7 @@ python tools/agents.py --root ../your-project check
 
 例如让你的 agent 执行：
 
-> 以 developer 角色修复当前问题。先读 AGENTS.md、.AGENTS/_shared/CONTEXT.md、.AGENTS/developer/ROLE.md 和 memory/MEMORY.md。按需读取 focused-change 技能。完成后将有证据的复用经验记录到该角色 memory/records/，并说明验证结果。
+> 以 developer 角色修复当前问题。先读 AGENTS.md、.AGENTS/_shared/CONTEXT.md、.AGENTS/developer/AGENTS.md 和 memory/MEMORY.md。按需读取 focused-change 技能。完成后将有证据的复用经验记录到该角色 memory/records/，并说明验证结果。
 
 也可以将 `context` 的标准输出传给客户端。该输出只是供读取的文本，不会自动注入模型、安装技能或执行其中的命令。默认只输出入口与摘要，附技能/记录清单；使用 `--skill NAME`、`--record FILE.md`（可重复）才加入选中的正文。
 

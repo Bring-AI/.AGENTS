@@ -14,7 +14,7 @@ The [official AGENTS.md guide](https://agents.md/) describes it as project instr
 
 | Situation | Limitation of AGENTS.md alone | What this project adds |
 | --- | --- | --- |
-| Architecture, implementation, and review touch the same code | File scope is not responsibility scope | A separate `ROLE.md` for each role |
+| Architecture, implementation, and review touch the same code | File scope is not responsibility scope | A separate `AGENTS.md` for each role |
 | Every session rediscovers the project | A Markdown entrypoint has no automatic memory writeback, expiry, or archiving | Memory with sources, dates, and status |
 | Every lesson goes into the entrypoint | Irrelevant history consumes context and makes rules harder to maintain | Summaries with records and skills loaded on demand |
 | Multiple agents work concurrently | Text conventions provide no scheduling, file locks, or transactions | Ownership and handoff conventions, used with Git/worktrees |
@@ -32,7 +32,7 @@ your-project/
 │   ├── _shared/
 │   │   └── CONTEXT.md             # Confirmed facts shared across roles
 │   ├── architect/
-│   │   ├── ROLE.md                # Responsibilities, boundaries, handoffs
+│   │   ├── AGENTS.md                # Responsibilities, boundaries, handoffs
 │   │   ├── memory/
 │   │   │   ├── MEMORY.md          # Current summary and record index
 │   │   │   └── records/*.md       # Decisions and lessons, read on demand
@@ -82,7 +82,7 @@ Add `.AGENTS/*/local/` to your project's `.gitignore` for temporary context that
 
 For example, ask your agent:
 
-> Fix the current issue as the developer role. First read AGENTS.md, .AGENTS/_shared/CONTEXT.md, .AGENTS/developer/ROLE.md, and that role's memory/MEMORY.md. Read the focused-change skill as needed. After completing the task, record reusable findings with evidence in the role's memory/records/ and report the verification results.
+> Fix the current issue as the developer role. First read AGENTS.md, .AGENTS/_shared/CONTEXT.md, .AGENTS/developer/AGENTS.md, and that role's memory/MEMORY.md. Read the focused-change skill as needed. After completing the task, record reusable findings with evidence in the role's memory/records/ and report the verification results.
 
 You can also pass the standard output of `context` to your client. It is text for the client to read; it does not automatically inject context into a model, install skills, or execute commands. By default it includes entry files and summaries, followed by skill and record inventories. Use `--skill NAME` and `--record FILE.md` (repeatable) to include selected bodies.
 

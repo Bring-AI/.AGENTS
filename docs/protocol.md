@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | `AGENTS.md` | 项目公共规则及角色路由 | 开始任务 |
 | `.AGENTS/_shared/CONTEXT.md` | 跨角色已确认的事实 | 开始任务 |
-| `.AGENTS/<role>/ROLE.md` | 角色目标、职责边界、交接对象 | 选择或切换角色 |
+| `.AGENTS/<role>/AGENTS.md` | 角色目标、职责边界、交接对象 | 选择或切换角色 |
 | `.AGENTS/<role>/memory/MEMORY.md` | 当前事实摘要及记录索引 | 选择或切换角色 |
 | `.AGENTS/<role>/memory/records/*.md` | 决策、经验和未解决问题 | 相关任务 |
 | `.AGENTS/<role>/skills/<skill>/SKILL.md` | 可复用方法与适用条件 | 技能匹配时 |
@@ -73,7 +73,7 @@ CLI `context` 在输出中标注相对路径，先组装这四个入口文件，
 ## 从单一 AGENTS.md 迁移
 
 1. 保留公共规则、命令和路径范围约定。
-2. 将职责说明移入相应 `ROLE.md`。
+2. 将职责说明移入相应 `AGENTS.md`。
 3. 将重复工作方法提炼为技能；历史结论提炼成带证据的记忆。
 4. 在原入口合并角色读取说明，使用 `check` 检查必要结构。
 5. 用一次实际任务验证客户端确实读取了所选角色文件。

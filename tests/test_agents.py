@@ -40,8 +40,9 @@ class AgentsTest(unittest.TestCase):
 
     def test_init_preserves_existing_bytes_and_custom_role(self):
         entry = self.put("AGENTS.md", "# 用户约定\nKeep me.\n")
+        role = self.put(".AGENTS/developer/AGENTS.md", "CUSTOM_ROLE_INSTRUCTIONS\n")
         memory = self.put(".AGENTS/developer/memory/MEMORY.md", "CUSTOM_MEMORY\n")
-        before = {p: p.read_bytes() for p in (entry, memory)}
+        before = {p: p.read_bytes() for p in (entry, role, memory)}
         for _ in range(2):
             result = self.run_cli("init", "--roles", "developer", "qa")
             self.assertEqual(result.returncode, 0, result.stderr)
@@ -49,6 +50,7 @@ class AgentsTest(unittest.TestCase):
         for path, content in before.items():
             self.assertEqual(path.read_bytes(), content)
         self.assertEqual(agents.check(self.root), ["developer", "qa"])
+        self.assertIn("CUSTOM_ROLE_INSTRUCTIONS", agents.context(self.root, "developer"))
 
     def test_role_isolation_and_progressive_loading(self):
         agents.init(self.root, ["developer", "reviewer"])
@@ -84,7 +86,7 @@ class AgentsTest(unittest.TestCase):
 
     def test_check_catches_missing_and_empty_required_files(self):
         agents.init(self.root, ["developer"])
-        role = self.root / ".AGENTS/developer/ROLE.md"
+        role = self.root / ".AGENTS/developer/AGENTS.md"
         role.write_text(" \n", encoding="utf-8")
         self.assertNotEqual(self.run_cli("check").returncode, 0)
         role.unlink()

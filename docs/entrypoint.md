@@ -9,7 +9,7 @@
 
 开始任务时读取：
 1. .AGENTS/_shared/CONTEXT.md
-2. .AGENTS/<ROLE>/ROLE.md
+2. .AGENTS/<ROLE>/AGENTS.md
 3. .AGENTS/<ROLE>/memory/MEMORY.md
 
 按任务需要查看 .AGENTS/<ROLE>/skills/*/SKILL.md 的描述，再读取适用技能的正文与相关 memory/records/ 记录。

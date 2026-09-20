@@ -14,7 +14,7 @@ RESERVED = {"con", "prn", "aux", "nul"} | {
 }
 ENTRYPOINT = """# Project instructions
 
-Read .AGENTS/_shared/CONTEXT.md, then the selected role's ROLE.md and
+Read .AGENTS/_shared/CONTEXT.md, then the selected role's AGENTS.md and
 memory/MEMORY.md under .AGENTS/<role>/. Select the role from the user's task.
 Read relevant skills/*/SKILL.md and memory/records/ files only when needed.
 Record reusable findings with evidence and dates, using separate task records
@@ -73,7 +73,7 @@ def create(root, relative, content):
 def add_role(root, role):
     valid_name(role)
     base = f".AGENTS/{role}"
-    create(root, f"{base}/ROLE.md", f"""# {role}
+    create(root, f"{base}/AGENTS.md", f"""# {role}
 
 ## Responsibility
 Define this role's scope and expected deliverables for your project.
@@ -106,7 +106,7 @@ def role_files(root, role):
     valid_name(role)
     base = f".AGENTS/{role}"
     return ["AGENTS.md", ".AGENTS/_shared/CONTEXT.md",
-            f"{base}/ROLE.md", f"{base}/memory/MEMORY.md"]
+            f"{base}/AGENTS.md", f"{base}/memory/MEMORY.md"]
 
 
 def skill_metadata(text, name):
