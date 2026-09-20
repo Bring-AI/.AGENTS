@@ -4,7 +4,7 @@
 
 **One project, multiple agents. Keep shared rules short and give role knowledge a clear home.**
 
-`.AGENTS` is a directory convention for any Git project, with a Python tool that has no third-party dependencies. Use `.AGENTS/<ROLE>/` to manage each role's **memory** and **skills**, so an agent taking over a task can find its responsibilities, known facts, and reusable methods.
+`.AGENTS` is a directory convention and a set of Markdown templates for any Git project. Use `.AGENTS/<ROLE>/` to manage each role's **memory** and **skills**, so an agent taking over a task can find its responsibilities, known facts, and reusable methods.
 
 It is not an agent runtime and does not start agents. Its contents are reviewable Markdown files that clients must explicitly read according to the entrypoint instructions.
 
@@ -19,7 +19,7 @@ The [official AGENTS.md guide](https://agents.md/) describes it as project instr
 | Every lesson goes into the entrypoint | Irrelevant history consumes context and makes rules harder to maintain | Concise role memory and skills loaded on demand |
 | Multiple agents work concurrently | Text conventions provide no scheduling, file locks, or transactions | Ownership and handoff conventions, used with Git/worktrees |
 | Methods need to be reused | Project instructions alone do not provide a complete skill management workflow | Separate `skills/<name>/SKILL.md` files |
-| Clients change | Discovery and instruction precedence depend on the client | Explicit reading or CLI context assembly |
+| Clients change | Discovery and instruction precedence depend on the client | Explicit role-file reading through the project entrypoint |
 
 **Keep AGENTS.md as the entrypoint. Put role knowledge in .AGENTS/.** This is a project convention, not an official AGENTS.md extension. It does not change client permissions or instruction precedence. See [limitations and tradeoffs (Chinese)](docs/limitations.md).
 
@@ -28,47 +28,31 @@ The [official AGENTS.md guide](https://agents.md/) describes it as project instr
 ```text
 your-project/
 ├── AGENTS.md                     # Shared rules, role selection, loading instructions
-├── .AGENTS/
-│   ├── _shared/
-│   │   └── CONTEXT.md             # Confirmed facts shared across roles
-│   ├── developer/
-│   │   ├── AGENTS.md              # Responsibilities, boundaries, handoffs
-│   │   ├── memory/
-│   │   │   └── MEMORY.md          # Current facts, decisions, and lessons
-│   │   └── skills/
-│   │       └── decision-record/SKILL.md
-│   └── reviewer/                 # Same structure
-└── tools/agents.py                # Optional, single-file tool
+└── .AGENTS/
+    ├── _shared/
+    │   └── CONTEXT.md             # Confirmed facts shared across roles
+    ├── developer/
+    │   ├── AGENTS.md              # Responsibilities, boundaries, handoffs
+    │   ├── memory/
+    │   │   └── MEMORY.md          # Current facts, decisions, and lessons
+    │   └── skills/
+    │       └── decision-record/SKILL.md
+    └── reviewer/                 # Same structure
 ```
 
 `ROLE` describes a responsibility, not a model or vendor. One agent can switch roles, and multiple agent instances can share a role. `_shared` is reserved; role and skill names use lowercase letters, digits, and hyphens.
 
 ## Quick start
 
-Requires Python 3.10+ with no dependencies to install. Run these commands from the repository root. On Windows, you may need to replace `python` with `py`, depending on your installation.
+No tools or runtime to install. Apply the convention directly to your project:
 
-```sh
-git clone https://github.com/Bring-AI/.AGENTS.git
-cd .AGENTS
-python tools/agents.py check
-python tools/agents.py context developer
-python tools/agents.py context developer --skill focused-change
-python -m unittest discover -s tests -v
-```
+1. Copy this repository's `.AGENTS/` directory into your project root.
+2. Adapt `developer` and `reviewer` to your responsibilities, or create your own role directories.
+3. Customize each role's `AGENTS.md`, `memory/MEMORY.md`, and skills, replacing this repository's example knowledge.
+4. Merge the [entrypoint template (Chinese)](docs/entrypoint.md) into your root `AGENTS.md`, preserving existing project rules.
+5. Ask your agent to read the selected role's files according to the entrypoint instructions.
 
-Use it with an existing project:
-
-```sh
-# Use this repository's tool for another project, or copy the single file there.
-python tools/agents.py --root ../your-project init
-python tools/agents.py --root ../your-project add-role researcher
-python tools/agents.py --root ../your-project context researcher
-python tools/agents.py --root ../your-project check
-```
-
-`init` creates generic skeletons for `developer` and `reviewer` by default. Customize them with `init --roles frontend backend qa`. It preserves all existing files, including `AGENTS.md`. If the entrypoint already exists, manually merge the [entrypoint template (Chinese)](docs/entrypoint.md). The specialized role instructions and skills in this repository's `.AGENTS/` are examples; initialization does not copy that project-specific content.
-
-Add `.AGENTS/*/local/` to your project's `.gitignore` for temporary context that should not be shared. Ignore rules are not a secrets management mechanism.
+For a new project, use this repository's layout as a starting point. Add `.AGENTS/*/local/` to your project's `.gitignore` for temporary material that should not be shared.
 
 ## Workflow
 
@@ -82,8 +66,6 @@ For example, ask your agent:
 
 > Fix the current issue as the developer role. First read AGENTS.md, .AGENTS/_shared/CONTEXT.md, .AGENTS/developer/AGENTS.md, and that role's memory/MEMORY.md. Read the focused-change skill as needed. After completing the task, record reusable findings with evidence in the role's memory/MEMORY.md and report the verification results.
 
-You can also pass the standard output of `context` to your client. It is text for the client to read; it does not automatically inject context into a model, install skills, or execute commands. By default it includes entry files and summaries, followed by the skill inventory. Use `--skill NAME` (repeatable) to include selected skill bodies.
-
 ## Documentation and boundaries
 
 The following supporting documents are in Chinese:
@@ -93,4 +75,4 @@ The following supporting documents are in Chinese:
 - [Entrypoint template for existing projects](docs/entrypoint.md)
 - [Contributing](CONTRIBUTING.md)
 
-`check` validates required files, names, nonempty contents, and the basic shape of skill frontmatter. It is not a full YAML validator and does not verify factual accuracy, links, or client compatibility. This project does not implement scheduling, automatic memory extraction, permission isolation, vector retrieval, or automatic conflict resolution.
+This is a file organization convention. It does not provide automatic loading, scheduling, memory extraction, permission isolation, vector retrieval, or automatic conflict resolution.

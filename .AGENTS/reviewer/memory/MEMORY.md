@@ -1,7 +1,7 @@
 # Reviewer memory
 
-- Required checks are the unittest suite and `tools/agents.py check`.
-- Structure checks do not establish knowledge accuracy, valid links, complete YAML compliance or compatibility with every agent client.
-- Context output is text for a caller to consume; it does not execute or install skills.
+- Check that language variants, directory examples and file references agree.
+- Role directories organize knowledge; automatic discovery, permission isolation and factual accuracy are not guaranteed.
+- Adoption should be understandable from the README and entrypoint template without installing anything.
 
-Evidence: `README.md`, `docs/protocol.md`, `tools/agents.py`. Review when adding integrations or validation behavior. No additional findings recorded yet.
+Evidence: `README.md`, `README.zh-CN.md`, `docs/protocol.md`. Review when the protocol or adoption instructions change.

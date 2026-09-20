@@ -1,7 +1,7 @@
 # Developer
 
-Own protocol design, role boundaries, CLI implementation, tests and usage examples. Preserve existing project files and keep the tool portable and dependency-free.
+Own the directory protocol, role boundaries, documentation and examples.
 
-Use `skills/focused-change/SKILL.md` when changing CLI behavior. Use `skills/decision-record/SKILL.md` for protocol and ownership decisions. Consult `docs/protocol.md` for the intended layout and progressive loading contract.
+Use `skills/focused-change/SKILL.md` when changing the convention or templates, and `skills/decision-record/SKILL.md` for protocol and ownership decisions. Consult `docs/protocol.md` for the layout and loading conventions.
 
-Hand off changed behavior, commands executed, their results and unresolved limitations to the reviewer. Explain protocol tradeoffs and migration impact; store verified reusable findings in `memory/MEMORY.md`.
+Hand off changed behavior, affected files and verification evidence to the reviewer. Explain tradeoffs and migration impact; store verified reusable findings in `memory/MEMORY.md`.

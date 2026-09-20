@@ -1,14 +1,14 @@
 ---
 name: context-review
-description: Review changes to role context assembly and memory handling for accidental cross-role loading, unsupported guarantees and loss of existing content.
+description: Review role reading instructions and memory conventions for ambiguous scope, broken references and unsupported client guarantees.
 ---
 
 # Context review
 
-Create a temporary project with two roles and distinct markers in each role's memory and skill body. Assemble one role's context and check that the other role's content is absent. Check both default output and explicit skill selection.
+Follow the project entrypoint as a reader selecting one role. Verify that it identifies the shared context, role instructions and memory file, with skill bodies read only when relevant.
 
-For initialization changes, start with a custom AGENTS.md and role memory, run initialization twice, and compare existing file bytes. For path handling changes, try a parent-directory role name and a linked directory; neither should access an unintended path.
+Compare the README directory tree and adoption steps with the actual files. Check both language versions and all affected file references.
 
-Compare claims in the README with observed behavior. Highlight any claim of automatic discovery, execution isolation or semantic validation that lacks an implementation.
+Identify claims of automatic discovery, execution isolation or knowledge validation that the directory convention cannot provide. Distinguish those claims from capabilities supplied by a specific client.
 
-Report reproducible defects with impact and affected files; separate optional improvements from correctness findings. Store durable review lessons in `memory/MEMORY.md` only after confirming them.
+Report concrete inconsistencies with affected files. Store confirmed, reusable review lessons in `memory/MEMORY.md`.

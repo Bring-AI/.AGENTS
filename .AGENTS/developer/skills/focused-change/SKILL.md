@@ -1,19 +1,14 @@
 ---
 name: focused-change
-description: Implement changes to the .AGENTS CLI while preserving existing files, role isolation and explicit context loading.
+description: Update the .AGENTS convention and role templates while keeping documentation, file references and adoption steps consistent.
 ---
 
-# Focused CLI change
+# Focused convention change
 
-Read the affected command and its documented behavior in `README.md` and `docs/protocol.md`. Reproduce the intended operation in a temporary project, including an existing AGENTS.md when initialization is affected.
+Read the affected examples and `docs/protocol.md`. Identify which role files and entrypoint instructions depend on the convention being changed.
 
-Preserve these contracts where relevant to the change:
+Update both README languages and affected templates together. Preserve the distinction between shared project rules, role responsibilities, memory and skills.
 
-- Initialization never overwrites a user's existing file.
-- Selecting one role does not include another role's memory or skill bodies.
-- Only explicitly selected skill bodies enter assembled context; role memory comes from `memory/MEMORY.md`.
-- Names and filesystem links cannot redirect operations outside the selected project.
+Verify that referenced files exist and that the adoption instructions work by copying and customizing the Markdown files. Keep role memory concise and load skill bodies only as needed.
 
-Run `python -m unittest discover -s tests -v` and `python tools/agents.py check`. Add a behavior test for a changed contract or demonstrated regression; avoid assertions that merely copy implementation details.
-
-Report observable behavior and remaining limitations. Store reusable, verified findings in `memory/MEMORY.md` with evidence rather than copying the full session log.
+Report the changed convention and any migration steps. Store reusable findings with evidence in `memory/MEMORY.md`.

@@ -4,7 +4,7 @@
 
 **一个项目，多个 agent；公共规则保持简短，角色知识各有归属。**
 
-`.AGENTS` 是一套可放进任意 Git 项目的目录约定，以及一个零第三方依赖的 Python 工具。使用 `.AGENTS/<ROLE>/` 管理不同角色的 **memory** 和 **skill**，让接手任务的 agent 可以找到职责、已知事实和可复用工作方法。
+`.AGENTS` 是一套可放进任意 Git 项目的目录约定和 Markdown 模板。使用 `.AGENTS/<ROLE>/` 管理不同角色的 **memory** 和 **skill**，让接手任务的 agent 可以找到职责、已知事实和可复用工作方法。
 
 它不是 agent 运行时，也不会自动启动多个 agent。目录内容是可审查的 Markdown，客户端需要按入口说明显式读取。
 
@@ -19,7 +19,7 @@
 | 所有经验都堆进入口文件 | 无关历史增加上下文开销，规则更难维护 | 简短的角色记忆与按需加载的技能 |
 | 多个 agent 同时工作 | 文本约定不提供调度、文件锁或事务 | 明确所有权与交接约定，配合 Git/worktree |
 | 方法需要反复复用 | 项目指令本身不提供完整的技能管理工作流 | 独立 `skills/<name>/SKILL.md` |
-| 切换客户端 | 自动发现和指令优先级由客户端实现决定 | 显式读取或 CLI 组装上下文 |
+| 切换客户端 | 自动发现和指令优先级由客户端实现决定 | 通过项目入口显式读取角色文件 |
 
 **保留 AGENTS.md，作为入口；把角色知识放到 .AGENTS/。** 这是一项项目级扩展约定，不是 AGENTS.md 的官方扩展，也不改变任何客户端的权限或指令优先级。详见[局限与设计取舍](docs/limitations.md)。
 
@@ -28,47 +28,31 @@
 ```text
 your-project/
 ├── AGENTS.md                     # 公共约定、角色选择与加载说明
-├── .AGENTS/
-│   ├── _shared/
-│   │   └── CONTEXT.md             # 跨角色的已确认事实
-│   ├── developer/
-│   │   ├── AGENTS.md              # 职责、边界与交接
-│   │   ├── memory/
-│   │   │   └── MEMORY.md          # 当前事实、决策与经验
-│   │   └── skills/
-│   │       └── decision-record/SKILL.md
-│   └── reviewer/                 # 相同结构
-└── tools/agents.py                # 可选，单文件工具
+└── .AGENTS/
+    ├── _shared/
+    │   └── CONTEXT.md             # 跨角色的已确认事实
+    ├── developer/
+    │   ├── AGENTS.md              # 职责、边界与交接
+    │   ├── memory/
+    │   │   └── MEMORY.md          # 当前事实、决策与经验
+    │   └── skills/
+    │       └── decision-record/SKILL.md
+    └── reviewer/                 # 相同结构
 ```
 
 `ROLE` 表示职责，不绑定某个模型或厂商。同一个 agent 可以切换角色，同一个角色也可以由多个 agent 实例承担。`_shared` 是保留目录；角色和技能名称使用小写字母、数字与连字符。
 
 ## 快速开始
 
-需要 Python 3.10+，无需安装依赖。以下命令在本仓库根目录运行，Windows 可按安装方式将 `python` 替换为 `py`。
+无需安装工具或运行环境，直接将目录约定应用到你的项目：
 
-```sh
-git clone https://github.com/Bring-AI/.AGENTS.git
-cd .AGENTS
-python tools/agents.py check
-python tools/agents.py context developer
-python tools/agents.py context developer --skill focused-change
-python -m unittest discover -s tests -v
-```
+1. 将本仓库的 `.AGENTS/` 复制到项目根目录。
+2. 根据实际职责调整 `developer`、`reviewer`，或创建自己的角色目录。
+3. 修改各角色的 `AGENTS.md`、`memory/MEMORY.md` 和技能内容，替换本仓库的示例知识。
+4. 将[入口模板](docs/entrypoint.md)合并到项目根目录的 `AGENTS.md`，保留项目原有规则。
+5. 让 agent 按入口说明读取所选角色的文件。
 
-接入已有项目：
-
-```sh
-# 将本仓库中的工具用于另一个项目（也可以直接复制该单文件）
-python tools/agents.py --root ../your-project init
-python tools/agents.py --root ../your-project add-role researcher
-python tools/agents.py --root ../your-project context researcher
-python tools/agents.py --root ../your-project check
-```
-
-`init` 默认建立 `developer`、`reviewer` 的通用骨架，可以用 `init --roles frontend backend qa` 自定义。它保留所有已有文件，不会覆盖已有 `AGENTS.md`；如果入口已存在，请手动合并[入口模板](docs/entrypoint.md)。示例角色的专业说明与技能位于本仓库 `.AGENTS/` 中，初始化骨架不自动复制这些项目特定内容。
-
-新项目还应将 `.AGENTS/*/local/` 加入自己的 `.gitignore`，用来保存不参与共享的临时上下文。忽略规则不是秘密管理机制。
+新项目可使用本仓库的结构作为起点。将 `.AGENTS/*/local/` 加入项目的 `.gitignore`，用于不参与共享的临时资料。
 
 ## 工作流程
 
@@ -82,8 +66,6 @@ python tools/agents.py --root ../your-project check
 
 > 以 developer 角色修复当前问题。先读 AGENTS.md、.AGENTS/_shared/CONTEXT.md、.AGENTS/developer/AGENTS.md 和 memory/MEMORY.md。按需读取 focused-change 技能。完成后将有证据的复用经验记录到该角色 memory/MEMORY.md，并说明验证结果。
 
-也可以将 `context` 的标准输出传给客户端。该输出只是供读取的文本，不会自动注入模型、安装技能或执行其中的命令。默认只输出入口与摘要，附技能清单；使用 `--skill NAME`（可重复）才加入选中的技能正文。
-
 ## 文档与边界
 
 - [目录协议、记忆生命周期与并发协作](docs/protocol.md)
@@ -91,4 +73,4 @@ python tools/agents.py --root ../your-project check
 - [已有项目的入口模板](docs/entrypoint.md)
 - [贡献指南](CONTRIBUTING.md)
 
-`check` 检查必要文件、命名、非空内容和技能前置元数据的基本形状；它不是完整 YAML 校验器，也不验证事实真伪、链接有效性或客户端兼容性。本项目不实现调度、自动记忆提取、权限隔离、向量检索或冲突自动合并。
+这是一套文件组织约定，不提供自动加载、调度、自动记忆提取、权限隔离、向量检索或冲突自动合并。

@@ -1,9 +1,8 @@
 # Shared context
 
-- This repository defines a project-local role knowledge convention, not an agent runtime.
-- The public interface is documented in `README.md` and `docs/protocol.md`.
-- The optional CLI lives in `tools/agents.py`, uses the Python standard library, and targets Python 3.10+.
-- `.AGENTS/` requires explicit loading. No automatic discovery by a client is assumed.
-- Verification: `python -m unittest discover -s tests -v` and `python tools/agents.py check`.
+- This repository contains a directory convention and Markdown templates.
+- The protocol is documented in `docs/protocol.md`; the English and Chinese READMEs explain adoption.
+- `.AGENTS/` requires explicit reading by the agent. Directory names do not guarantee discovery or isolation.
+- Adoption consists of copying role directories, customizing their contents, and merging loading instructions into the project entrypoint.
 
-Sources: the current repository implementation and protocol. Review these facts when the CLI or protocol changes.
+Sources: `README.md`, `README.zh-CN.md`, `docs/protocol.md`. Review when the protocol or adoption instructions change.
