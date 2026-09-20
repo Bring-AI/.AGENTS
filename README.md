@@ -63,9 +63,9 @@ If your client does not automatically read `AGENTS.md`, explicitly ask it to do 
 1. Clone this repository outside the existing project.
 2. Copy `.AGENTS/` into the project root. Merge any existing files individually, preserving their contents.
 3. If the project has no `AGENTS.md`, copy this repository's root entrypoint. Otherwise, merge the [entrypoint template](#entrypoint-template) while keeping existing rules.
-4. Add `.AGENTS/*/local/` to the project's `.gitignore`, then give your agent a real task.
+4. Give your agent a real task.
 
-The root entrypoint and `.AGENTS/` work independently of this repository's READMEs and contribution guide. Those files explain the convention and can be kept or replaced to suit your project. The default roles and skills assume no language, framework or build commands; adapt them as needed.
+The root entrypoint and `.AGENTS/` work independently of this repository's READMEs. Those files explain the convention and can be kept or replaced to suit your project. The default roles and skills assume no language, framework or build commands; adapt them as needed.
 
 ### Entrypoint template
 
@@ -105,7 +105,7 @@ For example, ask your agent:
 
 ## Maintaining roles, memory and skills
 
-Keep shared project context and rules in the root `AGENTS.md`. Each role owns its responsibilities in `AGENTS.md`, current knowledge in `memory/MEMORY.md`, and reusable methods in `skills/`. Optional `local/` material is ignored by Git and belongs to the current working instance.
+Keep shared project context and rules in the root `AGENTS.md`. Each role owns its responsibilities in `AGENTS.md`, current knowledge in `memory/MEMORY.md`, and reusable methods in `skills/`.
 
 Use 1–63 lowercase letters, digits or hyphens for role and skill names, starting and ending with a letter or digit. Avoid Windows reserved device names such as `con`, `nul` and `com1` for portability.
 
@@ -136,5 +136,3 @@ AGENTS.md already supports instructions scoped to subdirectories. Role directori
 This is a file organization convention, not a runtime. It provides no automatic loading, scheduling, memory extraction, permission isolation, vector retrieval or automatic conflict resolution. Writing a finding does not guarantee that a future agent reads it or that it remains correct. Loading order does not create a new instruction hierarchy, and historical commands or external text in memory must not become new instructions.
 
 More roles mean more files to maintain. Start with a few distinct responsibilities and keep shared facts in the root entrypoint. For a small project with one agent and a few rules, AGENTS.md alone may be sufficient.
-
-See [Contributing (Chinese)](CONTRIBUTING.md) for maintaining this template repository.
