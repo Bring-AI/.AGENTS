@@ -8,7 +8,7 @@
 本项目使用 .AGENTS/<ROLE>/ 管理角色知识。使用 developer 进行调查、设计、实现和修复，使用 reviewer 评审变更。角色不绑定具体模型，同一个 agent 可以依次承担多个角色。
 
 开始任务时读取：
-1. .AGENTS/_shared/CONTEXT.md
+1. 根 AGENTS.md 中的项目背景和公共约定
 2. .AGENTS/<ROLE>/AGENTS.md
 3. .AGENTS/<ROLE>/memory/MEMORY.md
 

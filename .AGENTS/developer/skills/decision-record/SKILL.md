@@ -9,6 +9,6 @@ Read the relevant project materials and existing decisions before proposing a ch
 
 Compare realistic alternatives. Explain the chosen approach through behavior, compatibility, operational cost or maintainability, using evidence appropriate to the task. Keep proposals distinct from accepted decisions.
 
-Record an accepted decision as a concise section in this role's `memory/MEMORY.md`, including its date, scope, rationale, evidence, consequences and a review condition. Put facts needed by all roles in `.AGENTS/_shared/CONTEXT.md` instead of duplicating them. Mark replaced conclusions as superseded or update them with a clear explanation; Git preserves history.
+Record an accepted decision as a concise section in this role's `memory/MEMORY.md`, including its date, scope, rationale, evidence, consequences and a review condition. Put concise project context needed by all roles in the root `AGENTS.md` instead of duplicating it. Mark replaced conclusions as superseded or update them with a clear explanation; Git preserves history.
 
 Use an existing project decision log when one already serves this purpose, and link to it from memory rather than copying it. Recording a decision does not expand the user's authorized scope.

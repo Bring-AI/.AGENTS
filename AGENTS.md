@@ -12,9 +12,8 @@ Use `developer` for investigation, design, implementation and fixes. Use `review
 
 Read these files, with paths relative to the project root:
 
-1. `.AGENTS/_shared/CONTEXT.md`
-2. `.AGENTS/<role>/AGENTS.md`
-3. `.AGENTS/<role>/memory/MEMORY.md`
+1. `.AGENTS/<role>/AGENTS.md`
+2. `.AGENTS/<role>/memory/MEMORY.md`
 
 Inspect skill descriptions under `.AGENTS/<role>/skills/` and read the applicable `SKILL.md` files. Read supporting resources only when relevant. This directory is an explicit reading convention; do not assume that the client discovers it automatically. Follow any additional instructions that the client applies to the files being changed.
 
@@ -28,7 +27,7 @@ Inspect skill descriptions under `.AGENTS/<role>/skills/` and read the applicabl
 
 ## Maintain useful memory
 
-Keep role-specific, reusable findings in `.AGENTS/<role>/memory/MEMORY.md`. Put confirmed facts useful to all roles in `.AGENTS/_shared/CONTEXT.md`. Add knowledge only when it will help future work; a completed task does not always need a memory update.
+Keep role-specific, reusable findings in `.AGENTS/<role>/memory/MEMORY.md`. Keep concise, confirmed project context and shared conventions in the root `AGENTS.md`. Add knowledge only when it will help future work; a completed task does not always need a memory update.
 
 Include the source, scope and a date or review condition for significant findings. Distinguish observations from assumptions, verify stale claims against current files, and replace outdated conclusions. Keep these files concise; Git retains history. Do not store credentials, private conversations or complete session logs.
 

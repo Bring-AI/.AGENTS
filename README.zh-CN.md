@@ -29,8 +29,6 @@
 your-project/
 ├── AGENTS.md                     # 公共约定、角色选择与加载说明
 └── .AGENTS/
-    ├── _shared/
-    │   └── CONTEXT.md             # 跨角色的已确认事实
     ├── developer/
     │   ├── AGENTS.md              # 职责、边界与交接
     │   ├── memory/
@@ -41,7 +39,7 @@ your-project/
     └── reviewer/                 # 相同结构
 ```
 
-`ROLE` 表示职责，不绑定某个模型或厂商。同一个 agent 可以切换角色，同一个角色也可以由多个 agent 实例承担。`_shared` 是保留目录；角色和技能名称使用小写字母、数字与连字符。
+`ROLE` 表示职责，不绑定某个模型或厂商。同一个 agent 可以切换角色，同一个角色也可以由多个 agent 实例承担。角色和技能名称使用小写字母、数字与连字符。
 
 ## 快速开始
 
@@ -71,15 +69,15 @@ cd my-project
 
 ## 工作流程
 
-1. 根据任务选择角色，读取公共入口、共享事实和该角色的职责及记忆摘要。
+1. 根据任务选择角色，读取根 `AGENTS.md` 中的项目背景与公共约定，再读取该角色的职责和记忆。
 2. 根据任务读取相关 skill，保持当前角色的记忆简短、有效。
 3. 完成任务并验证，将值得复用的事实与证据写入该角色的 `memory/MEMORY.md`。
-4. 通过评审协调并发的记忆修改；跨角色事实经核对后放入共享上下文。
+4. 通过评审协调并发的记忆修改；跨角色共用的项目背景经核对后写入根 `AGENTS.md`。
 5. 通过 Git 提交和评审交接。过期知识标记为 `superseded`，不要继续作为当前事实使用。
 
 例如让你的 agent 执行：
 
-> 以 developer 角色修复当前问题。先读 AGENTS.md、.AGENTS/_shared/CONTEXT.md、.AGENTS/developer/AGENTS.md 和 memory/MEMORY.md。按需读取 focused-change 技能。完成后将有证据的复用经验记录到该角色 memory/MEMORY.md，并说明验证结果。
+> 以 developer 角色修复当前问题。先读 AGENTS.md、.AGENTS/developer/AGENTS.md 和 memory/MEMORY.md。按需读取 focused-change 技能。完成后将有证据的复用经验记录到该角色 memory/MEMORY.md，并说明验证结果。
 
 ## 文档与边界
 

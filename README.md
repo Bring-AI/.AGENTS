@@ -29,8 +29,6 @@ The [official AGENTS.md guide](https://agents.md/) describes it as project instr
 your-project/
 ├── AGENTS.md                     # Shared rules, role selection, loading instructions
 └── .AGENTS/
-    ├── _shared/
-    │   └── CONTEXT.md             # Confirmed facts shared across roles
     ├── developer/
     │   ├── AGENTS.md              # Responsibilities, boundaries, handoffs
     │   ├── memory/
@@ -41,7 +39,7 @@ your-project/
     └── reviewer/                 # Same structure
 ```
 
-`ROLE` describes a responsibility, not a model or vendor. One agent can switch roles, and multiple agent instances can share a role. `_shared` is reserved; role and skill names use lowercase letters, digits, and hyphens.
+`ROLE` describes a responsibility, not a model or vendor. One agent can switch roles, and multiple agent instances can share a role. Role and skill names use lowercase letters, digits, and hyphens.
 
 ## Quick start
 
@@ -71,15 +69,15 @@ The root entrypoint and `.AGENTS/` work independently of this repository's READM
 
 ## Workflow
 
-1. Choose a role for the task. Read the project entrypoint, shared facts, role responsibilities, and memory summary.
+1. Choose a role for the task. Read the root `AGENTS.md` for project context and shared rules, then the role instructions and memory.
 2. Read relevant skills as needed. Keep the selected role's memory concise and current.
 3. Complete and verify the task. Write reusable findings and their evidence into the role's `memory/MEMORY.md`.
-4. Reconcile concurrent memory edits through review. Move verified cross-role facts into shared context.
+4. Reconcile concurrent memory edits through review. Keep verified project context useful to all roles in the root `AGENTS.md`.
 5. Hand off through Git commits and review. Mark replaced knowledge as `superseded` instead of continuing to treat it as current fact.
 
 For example, ask your agent:
 
-> Fix the current issue as the developer role. First read AGENTS.md, .AGENTS/_shared/CONTEXT.md, .AGENTS/developer/AGENTS.md, and that role's memory/MEMORY.md. Read the focused-change skill as needed. After completing the task, record reusable findings with evidence in the role's memory/MEMORY.md and report the verification results.
+> Fix the current issue as the developer role. First read AGENTS.md, .AGENTS/developer/AGENTS.md, and that role's memory/MEMORY.md. Read the focused-change skill as needed. After completing the task, record reusable findings with evidence in the role's memory/MEMORY.md and report the verification results.
 
 ## Documentation and boundaries
 
