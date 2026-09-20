@@ -140,6 +140,20 @@ class AgentsTest(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(len(agents.check(target)), 3)
 
+    @unittest.skipUnless(sys.platform == "win32", "Windows short-path aliases")
+    def test_windows_short_path_root(self):
+        import ctypes
+        long_path = self.root / "project directory with spaces"
+        long_path.mkdir()
+        buffer = ctypes.create_unicode_buffer(32768)
+        size = ctypes.windll.kernel32.GetShortPathNameW(str(long_path), buffer, len(buffer))
+        if not size or size >= len(buffer) or buffer.value == str(long_path):
+            self.skipTest("8.3 short names are unavailable on this volume")
+        short_root = Path(buffer.value) / "new project"
+        agents.init(short_root, ["developer"])
+        self.assertEqual(agents.check(short_root), ["developer"])
+        self.assertTrue((long_path / "new project/AGENTS.md").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()

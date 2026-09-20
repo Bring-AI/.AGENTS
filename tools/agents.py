@@ -2,6 +2,7 @@
 """Portable, dependency-free helpers for the .AGENTS directory convention."""
 
 import argparse
+import os
 from pathlib import Path
 import re
 import sys
@@ -41,7 +42,9 @@ def safe_path(root, *parts):
             attributes = getattr(item.lstat(), "st_file_attributes", 0)
             if attributes & 0x400:
                 raise ValueError(f"Reparse points are not supported: {item}")
-    if not candidate.resolve().is_relative_to(root):
+    # Windows short-name aliases (RUNNER~1) and long paths identify the same
+    # directory. Compare canonical forms after rejecting links above.
+    if not candidate.resolve().is_relative_to(root.resolve()):
         raise ValueError(f"Path outside project: {candidate}")
     return candidate
 
@@ -211,7 +214,6 @@ def main(argv=None):
     commands.add_parser("check", help="Check required structure and basic skill metadata")
     args = parser.parse_args(argv)
     # abspath normalizes '..' without silently following symbolic links.
-    import os
     root = Path(os.path.abspath(args.root))
     try:
         safe_path(root)
