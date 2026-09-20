@@ -1,53 +1,53 @@
 # .AGENTS
 
-**简体中文** | [English](README.en.md)
+**English** | [简体中文](README.zh-CN.md)
 
-**一个项目，多个 agent；公共规则保持简短，角色知识各有归属。**
+**One project, multiple agents. Keep shared rules short and give role knowledge a clear home.**
 
-`.AGENTS` 是一套可放进任意 Git 项目的目录约定，以及一个零第三方依赖的 Python 工具。使用 `.AGENTS/<ROLE>/` 管理不同角色的 **memory** 和 **skill**，让接手任务的 agent 可以找到职责、已知事实和可复用工作方法。
+`.AGENTS` is a directory convention for any Git project, with a Python tool that has no third-party dependencies. Use `.AGENTS/<ROLE>/` to manage each role's **memory** and **skills**, so an agent taking over a task can find its responsibilities, known facts, and reusable methods.
 
-它不是 agent 运行时，也不会自动启动多个 agent。目录内容是可审查的 Markdown，客户端需要按入口说明显式读取。
+It is not an agent runtime and does not start agents. Its contents are reviewable Markdown files that clients must explicitly read according to the entrypoint instructions.
 
-## 为什么只有 AGENTS.md 还不够？
+## Why isn't AGENTS.md enough on its own?
 
-[`AGENTS.md` 官方说明](https://agents.md/)将它定位为面向编码 agent 的项目说明，并支持按子目录划分指令。它很适合保存构建命令、代码约定和公共规则。但多 agent 协作还有另一条维度：**角色**。
+The [official AGENTS.md guide](https://agents.md/) describes it as project instructions for coding agents, with support for instructions scoped to subdirectories. It works well for build commands, coding conventions, and shared rules. Collaboration between multiple agents introduces another dimension: **roles**.
 
-| 场景 | 单靠 AGENTS.md 的局限 | 本项目的补充 |
+| Situation | Limitation of AGENTS.md alone | What this project adds |
 | --- | --- | --- |
-| 架构、开发和评审操作同一份代码 | 文件路径范围不等于职责范围 | 每个角色独立的 `ROLE.md` |
-| 每次会话都重新探索项目 | Markdown 入口没有自动记忆写回、过期和归档机制 | 有来源、日期和状态的 memory |
-| 所有经验都堆进入口文件 | 无关历史增加上下文开销，规则更难维护 | 摘要入口与按需加载的记录、技能 |
-| 多个 agent 同时工作 | 文本约定不提供调度、文件锁或事务 | 明确所有权与交接约定，配合 Git/worktree |
-| 方法需要反复复用 | 项目指令本身不提供完整的技能管理工作流 | 独立 `skills/<name>/SKILL.md` |
-| 切换客户端 | 自动发现和指令优先级由客户端实现决定 | 显式读取或 CLI 组装上下文 |
+| Architecture, implementation, and review touch the same code | File scope is not responsibility scope | A separate `ROLE.md` for each role |
+| Every session rediscovers the project | A Markdown entrypoint has no automatic memory writeback, expiry, or archiving | Memory with sources, dates, and status |
+| Every lesson goes into the entrypoint | Irrelevant history consumes context and makes rules harder to maintain | Summaries with records and skills loaded on demand |
+| Multiple agents work concurrently | Text conventions provide no scheduling, file locks, or transactions | Ownership and handoff conventions, used with Git/worktrees |
+| Methods need to be reused | Project instructions alone do not provide a complete skill management workflow | Separate `skills/<name>/SKILL.md` files |
+| Clients change | Discovery and instruction precedence depend on the client | Explicit reading or CLI context assembly |
 
-**保留 AGENTS.md，作为入口；把角色知识放到 .AGENTS/。** 这是一项项目级扩展约定，不是 AGENTS.md 的官方扩展，也不改变任何客户端的权限或指令优先级。详见[局限与设计取舍](docs/limitations.md)。
+**Keep AGENTS.md as the entrypoint. Put role knowledge in .AGENTS/.** This is a project convention, not an official AGENTS.md extension. It does not change client permissions or instruction precedence. See [limitations and tradeoffs (Chinese)](docs/limitations.md).
 
-## 目录
+## Layout
 
 ```text
 your-project/
-├── AGENTS.md                     # 公共约定、角色选择与加载说明
+├── AGENTS.md                     # Shared rules, role selection, loading instructions
 ├── .AGENTS/
 │   ├── _shared/
-│   │   └── CONTEXT.md             # 跨角色的已确认事实
+│   │   └── CONTEXT.md             # Confirmed facts shared across roles
 │   ├── architect/
-│   │   ├── ROLE.md                # 职责、边界与交接
+│   │   ├── ROLE.md                # Responsibilities, boundaries, handoffs
 │   │   ├── memory/
-│   │   │   ├── MEMORY.md          # 当前摘要与记录索引
-│   │   │   └── records/*.md       # 决策与经验，按需读取
+│   │   │   ├── MEMORY.md          # Current summary and record index
+│   │   │   └── records/*.md       # Decisions and lessons, read on demand
 │   │   └── skills/
 │   │       └── decision-record/SKILL.md
-│   ├── developer/                # 相同结构
-│   └── reviewer/                 # 相同结构
-└── tools/agents.py                # 可选，单文件工具
+│   ├── developer/                # Same structure
+│   └── reviewer/                 # Same structure
+└── tools/agents.py                # Optional, single-file tool
 ```
 
-`ROLE` 表示职责，不绑定某个模型或厂商。同一个 agent 可以切换角色，同一个角色也可以由多个 agent 实例承担。`_shared` 是保留目录；角色和技能名称使用小写字母、数字与连字符。
+`ROLE` describes a responsibility, not a model or vendor. One agent can switch roles, and multiple agent instances can share a role. `_shared` is reserved; role and skill names use lowercase letters, digits, and hyphens.
 
-## 快速开始
+## Quick start
 
-需要 Python 3.10+，无需安装依赖。以下命令在本仓库根目录运行，Windows 可按安装方式将 `python` 替换为 `py`。
+Requires Python 3.10+ with no dependencies to install. Run these commands from the repository root. On Windows, you may need to replace `python` with `py`, depending on your installation.
 
 ```sh
 git clone https://github.com/Bring-AI/.AGENTS.git
@@ -58,39 +58,41 @@ python tools/agents.py context developer --skill focused-change
 python -m unittest discover -s tests -v
 ```
 
-接入已有项目：
+Use it with an existing project:
 
 ```sh
-# 将本仓库中的工具用于另一个项目（也可以直接复制该单文件）
+# Use this repository's tool for another project, or copy the single file there.
 python tools/agents.py --root ../your-project init
 python tools/agents.py --root ../your-project add-role researcher
 python tools/agents.py --root ../your-project context researcher
 python tools/agents.py --root ../your-project check
 ```
 
-`init` 默认建立 `architect`、`developer`、`reviewer` 的通用骨架，可以用 `init --roles frontend backend qa` 自定义。它保留所有已有文件，不会覆盖已有 `AGENTS.md`；如果入口已存在，请手动合并[入口模板](docs/entrypoint.md)。示例角色的专业说明与技能位于本仓库 `.AGENTS/` 中，初始化骨架不自动复制这些项目特定内容。
+`init` creates generic skeletons for `architect`, `developer`, and `reviewer` by default. Customize them with `init --roles frontend backend qa`. It preserves all existing files, including `AGENTS.md`. If the entrypoint already exists, manually merge the [entrypoint template (Chinese)](docs/entrypoint.md). The specialized role instructions and skills in this repository's `.AGENTS/` are examples; initialization does not copy that project-specific content.
 
-新项目还应将 `.AGENTS/*/local/` 加入自己的 `.gitignore`，用来保存不参与共享的临时上下文。忽略规则不是秘密管理机制。
+Add `.AGENTS/*/local/` to your project's `.gitignore` for temporary context that should not be shared. Ignore rules are not a secrets management mechanism.
 
-## 工作流程
+## Workflow
 
-1. 根据任务选择角色，读取公共入口、共享事实和该角色的职责及记忆摘要。
-2. 根据任务读取相关 skill 和历史记录；不要默认加载所有角色全部历史。
-3. 完成任务并验证，将值得复用的事实与证据写入独立记录。
-4. 更新该角色摘要中的索引；跨角色事实经核对后放入共享上下文。
-5. 通过 Git 提交和评审交接。过期知识标记为 `superseded`，不要继续作为当前事实使用。
+1. Choose a role for the task. Read the project entrypoint, shared facts, role responsibilities, and memory summary.
+2. Read relevant skills and historical records as needed. Do not load every role's entire history by default.
+3. Complete and verify the task. Write reusable findings and their evidence into separate records.
+4. Update the role's summary index. Move verified cross-role facts into shared context.
+5. Hand off through Git commits and review. Mark replaced knowledge as `superseded` instead of continuing to treat it as current fact.
 
-例如让你的 agent 执行：
+For example, ask your agent:
 
-> 以 developer 角色修复当前问题。先读 AGENTS.md、.AGENTS/_shared/CONTEXT.md、.AGENTS/developer/ROLE.md 和 memory/MEMORY.md。按需读取 focused-change 技能。完成后将有证据的复用经验记录到该角色 memory/records/，并说明验证结果。
+> Fix the current issue as the developer role. First read AGENTS.md, .AGENTS/_shared/CONTEXT.md, .AGENTS/developer/ROLE.md, and that role's memory/MEMORY.md. Read the focused-change skill as needed. After completing the task, record reusable findings with evidence in the role's memory/records/ and report the verification results.
 
-也可以将 `context` 的标准输出传给客户端。该输出只是供读取的文本，不会自动注入模型、安装技能或执行其中的命令。默认只输出入口与摘要，附技能/记录清单；使用 `--skill NAME`、`--record FILE.md`（可重复）才加入选中的正文。
+You can also pass the standard output of `context` to your client. It is text for the client to read; it does not automatically inject context into a model, install skills, or execute commands. By default it includes entry files and summaries, followed by skill and record inventories. Use `--skill NAME` and `--record FILE.md` (repeatable) to include selected bodies.
 
-## 文档与边界
+## Documentation and boundaries
 
-- [目录协议、记忆生命周期与并发协作](docs/protocol.md)
-- [AGENTS.md 的局限与本方案的边界](docs/limitations.md)
-- [已有项目的入口模板](docs/entrypoint.md)
-- [贡献指南](CONTRIBUTING.md)
+The following supporting documents are in Chinese:
 
-`check` 检查必要文件、命名、非空内容和技能前置元数据的基本形状；它不是完整 YAML 校验器，也不验证事实真伪、链接有效性或客户端兼容性。本项目不实现调度、自动记忆提取、权限隔离、向量检索或冲突自动合并。
+- [Directory protocol, memory lifecycle, and concurrent collaboration](docs/protocol.md)
+- [AGENTS.md limitations and this approach's boundaries](docs/limitations.md)
+- [Entrypoint template for existing projects](docs/entrypoint.md)
+- [Contributing](CONTRIBUTING.md)
+
+`check` validates required files, names, nonempty contents, and the basic shape of skill frontmatter. It is not a full YAML validator and does not verify factual accuracy, links, or client compatibility. This project does not implement scheduling, automatic memory extraction, permission isolation, vector retrieval, or automatic conflict resolution.
