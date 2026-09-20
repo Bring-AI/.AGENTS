@@ -36,6 +36,7 @@ your-project/
     │   ├── memory/
     │   │   └── MEMORY.md          # 当前事实、决策与经验
     │   └── skills/
+    │       ├── focused-change/SKILL.md
     │       └── decision-record/SKILL.md
     └── reviewer/                 # 相同结构
 ```
@@ -44,15 +45,29 @@ your-project/
 
 ## 快速开始
 
-无需安装工具或运行环境，直接将目录约定应用到你的项目：
+无需安装工具，也不必先填完模板。根目录的 `AGENTS.md` 和默认角色可直接使用；项目事实和记忆在实际任务中逐步建立。
 
-1. 将本仓库的 `.AGENTS/` 复制到项目根目录。
-2. 根据实际职责调整 `developer`、`reviewer`，或创建自己的角色目录。
-3. 修改各角色的 `AGENTS.md`、`memory/MEMORY.md` 和技能内容，替换本仓库的示例知识。
-4. 将[入口模板](docs/entrypoint.md)合并到项目根目录的 `AGENTS.md`，保留项目原有规则。
-5. 让 agent 按入口说明读取所选角色的文件。
+### 新项目：clone 后直接开始
 
-新项目可使用本仓库的结构作为起点。将 `.AGENTS/*/local/` 加入项目的 `.gitignore`，用于不参与共享的临时资料。
+```sh
+git clone https://github.com/Bring-AI/.AGENTS.git my-project
+cd my-project
+```
+
+在这个目录中打开你的 agent，给出项目目标和第一个任务。例如：
+
+> 阅读 AGENTS.md，使用 developer 角色，根据我的需求开始开发。先了解已有文件；项目尚未确定的技术栈和约束不要当作事实。将工作中确认、值得复用的项目知识写入对应 memory。
+
+如果客户端不会自动读取 `AGENTS.md`，在任务提示中明确要求它读取。选择角色不要求启动多个 agent，同一个 agent 可以依次开发和评审。
+
+### 已有项目：合并入口，复制角色目录
+
+1. 将本仓库 clone 到现有项目之外。
+2. 将 `.AGENTS/` 复制到项目根目录；已有同名文件时逐项合并，保留原有内容。
+3. 如果项目还没有 `AGENTS.md`，复制本仓库的根入口；已有入口则合并[角色读取说明](docs/entrypoint.md)，保留原有规则。
+4. 将 `.AGENTS/*/local/` 加入项目的 `.gitignore`，然后给 agent 一个实际任务。
+
+根入口和 `.AGENTS/` 可以独立使用，不依赖本仓库的 README、贡献指南或 `docs/`。这些文件用于解释约定，可按项目需要保留或替换。默认角色和技能不预设语言、框架或构建命令；按需求调整即可。
 
 ## 工作流程
 

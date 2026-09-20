@@ -1,8 +1,5 @@
-# Shared context
+# Shared project context
 
-- This repository contains a directory convention and Markdown templates.
-- The protocol is documented in `docs/protocol.md`; the English and Chinese READMEs explain adoption.
-- `.AGENTS/` requires explicit reading by the agent. Directory names do not guarantee discovery or isolation.
-- Adoption consists of copying role directories, customizing their contents, and merging loading instructions into the project entrypoint.
+No project-specific facts have been established yet.
 
-Sources: `README.md`, `README.zh-CN.md`, `docs/protocol.md`. Review when the protocol or adoption instructions change.
+As work establishes them, replace this note with concise, confirmed facts useful across roles: project purpose, important components, supported environments, verified development commands and cross-cutting constraints. Include sources and review conditions where useful. Omit unknowns rather than inventing defaults.

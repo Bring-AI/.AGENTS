@@ -1,14 +1,14 @@
 ---
 name: focused-change
-description: Update the .AGENTS convention and role templates while keeping documentation, file references and adoption steps consistent.
+description: Implement a feature, bug fix or bounded project change, tracing affected behavior and verifying the requested outcome.
 ---
 
-# Focused convention change
+# Focused change
 
-Read the affected examples and `docs/protocol.md`. Identify which role files and entrypoint instructions depend on the convention being changed.
+Establish the expected outcome from the task and current project behavior. For a defect, reproduce it when feasible or identify the evidence that explains it. Read the affected interfaces and consumers before selecting an approach.
 
-Update both README languages and affected templates together. Preserve the distinction between shared project rules, role responsibilities, memory and skills.
+Make a coherent change using the project's existing patterns. Include affected callers, configuration and documentation when necessary. Avoid unrelated cleanup that makes the result harder to assess.
 
-Verify that referenced files exist and that the adoption instructions work by copying and customizing the Markdown files. Keep role memory concise and load skill bodies only as needed.
+Use the project's documented checks where applicable. Add or update tests when they demonstrate changed behavior or prevent a meaningful regression. For documentation or other non-code artifacts, verify the content, references and intended use directly. Match verification effort to the actual change.
 
-Report the changed convention and any migration steps. Store reusable findings with evidence in `memory/MEMORY.md`.
+Review the final diff for unintended edits. Report the outcome and verification evidence, including checks that could not run. Record reusable findings in this role's `memory/MEMORY.md` only when they will help future work.

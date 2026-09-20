@@ -1,7 +1,5 @@
 # Reviewer memory
 
-- Check that language variants, directory examples and file references agree.
-- Role directories organize knowledge; automatic discovery, permission isolation and factual accuracy are not guaranteed.
-- Adoption should be understandable from the README and entrypoint template without installing anything.
+No project-specific findings recorded yet.
 
-Evidence: `README.md`, `README.zh-CN.md`, `docs/protocol.md`. Review when the protocol or adoption instructions change.
+Keep verified review knowledge here: important invariants, recurring failure modes and verification gaps that future reviews should consider. Include evidence, scope and a date or review condition for significant findings. Replace this note when adding the first useful finding.

@@ -1,14 +1,14 @@
 ---
 name: decision-record
-description: Record protocol or role-ownership decisions when changing the .AGENTS layout, loading contract or collaboration boundaries.
+description: Capture a consequential design decision when its alternatives, constraints or tradeoffs will matter to future project work.
 ---
 
 # Decision record
 
-Read `docs/protocol.md` and this role's `memory/MEMORY.md`. Identify the exact contract being changed and its callers, including role templates and the project entrypoint.
+Read the relevant project materials and existing decisions before proposing a change. Identify the problem, constraints, affected interfaces and the cost of leaving the current design in place.
 
-Compare the proposed change with keeping the current convention. State migration cost and distinguish capabilities provided by agent clients from conventions maintained by collaborators.
+Compare realistic alternatives. Explain the chosen approach through behavior, compatibility, operational cost or maintainability, using evidence appropriate to the task. Keep proposals distinct from accepted decisions.
 
-Capture an accepted decision as a concise section in this role's `memory/MEMORY.md` with date, owner, scope, status, evidence and a review condition. Mark replaced conclusions as superseded; retain history through Git. Do not present an unapproved proposal as an accepted fact.
+Record an accepted decision as a concise section in this role's `memory/MEMORY.md`, including its date, scope, rationale, evidence, consequences and a review condition. Put facts needed by all roles in `.AGENTS/_shared/CONTEXT.md` instead of duplicating them. Mark replaced conclusions as superseded or update them with a clear explanation; Git preserves history.
 
-Hand off affected files and observable acceptance conditions to the implementation owner. A decision record does not expand the user's authorized scope.
+Use an existing project decision log when one already serves this purpose, and link to it from memory rather than copying it. Recording a decision does not expand the user's authorized scope.

@@ -36,6 +36,7 @@ your-project/
     │   ├── memory/
     │   │   └── MEMORY.md          # Current facts, decisions, and lessons
     │   └── skills/
+    │       ├── focused-change/SKILL.md
     │       └── decision-record/SKILL.md
     └── reviewer/                 # Same structure
 ```
@@ -44,15 +45,29 @@ your-project/
 
 ## Quick start
 
-No tools or runtime to install. Apply the convention directly to your project:
+No installation or template-filling step is required. The root `AGENTS.md` and default roles are ready to use; project facts and memory are established through actual work.
 
-1. Copy this repository's `.AGENTS/` directory into your project root.
-2. Adapt `developer` and `reviewer` to your responsibilities, or create your own role directories.
-3. Customize each role's `AGENTS.md`, `memory/MEMORY.md`, and skills, replacing this repository's example knowledge.
-4. Merge the [entrypoint template (Chinese)](docs/entrypoint.md) into your root `AGENTS.md`, preserving existing project rules.
-5. Ask your agent to read the selected role's files according to the entrypoint instructions.
+### New project: clone and start
 
-For a new project, use this repository's layout as a starting point. Add `.AGENTS/*/local/` to your project's `.gitignore` for temporary material that should not be shared.
+```sh
+git clone https://github.com/Bring-AI/.AGENTS.git my-project
+cd my-project
+```
+
+Open your agent in this directory and give it the project goal and first task. For example:
+
+> Read AGENTS.md and work as developer to implement my requirements. Inspect the existing files first. Do not treat an undecided stack or constraint as fact. Save confirmed, reusable project knowledge in the appropriate memory file as the work progresses.
+
+If your client does not automatically read `AGENTS.md`, explicitly ask it to do so. Choosing a role does not require multiple agents; one agent can develop and review sequentially.
+
+### Existing project: merge the entrypoint and copy role files
+
+1. Clone this repository outside the existing project.
+2. Copy `.AGENTS/` into the project root. Merge any existing files individually, preserving their contents.
+3. If the project has no `AGENTS.md`, copy this repository's root entrypoint. Otherwise, merge the [role-reading instructions (Chinese)](docs/entrypoint.md) while keeping existing rules.
+4. Add `.AGENTS/*/local/` to the project's `.gitignore`, then give your agent a real task.
+
+The root entrypoint and `.AGENTS/` work independently of this repository's READMEs, contribution guide and `docs/`. Those files explain the convention and can be kept or replaced to suit your project. The default roles and skills assume no language, framework or build commands; adapt them as needed.
 
 ## Workflow
 
