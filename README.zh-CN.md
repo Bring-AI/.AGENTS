@@ -16,7 +16,7 @@
 | --- | --- | --- |
 | 架构、开发和评审操作同一份代码 | 文件路径范围不等于职责范围 | 每个角色独立的 `AGENTS.md` |
 | 每次会话都重新探索项目 | Markdown 入口没有自动记忆写回、过期和归档机制 | 有来源、日期和状态的 memory |
-| 所有经验都堆进入口文件 | 无关历史增加上下文开销，规则更难维护 | 摘要入口与按需加载的记录、技能 |
+| 所有经验都堆进入口文件 | 无关历史增加上下文开销，规则更难维护 | 简短的角色记忆与按需加载的技能 |
 | 多个 agent 同时工作 | 文本约定不提供调度、文件锁或事务 | 明确所有权与交接约定，配合 Git/worktree |
 | 方法需要反复复用 | 项目指令本身不提供完整的技能管理工作流 | 独立 `skills/<name>/SKILL.md` |
 | 切换客户端 | 自动发现和指令优先级由客户端实现决定 | 显式读取或 CLI 组装上下文 |
@@ -31,14 +31,12 @@ your-project/
 ├── .AGENTS/
 │   ├── _shared/
 │   │   └── CONTEXT.md             # 跨角色的已确认事实
-│   ├── architect/
-│   │   ├── AGENTS.md                # 职责、边界与交接
+│   ├── developer/
+│   │   ├── AGENTS.md              # 职责、边界与交接
 │   │   ├── memory/
-│   │   │   ├── MEMORY.md          # 当前摘要与记录索引
-│   │   │   └── records/*.md       # 决策与经验，按需读取
+│   │   │   └── MEMORY.md          # 当前事实、决策与经验
 │   │   └── skills/
 │   │       └── decision-record/SKILL.md
-│   ├── developer/                # 相同结构
 │   └── reviewer/                 # 相同结构
 └── tools/agents.py                # 可选，单文件工具
 ```
@@ -68,23 +66,23 @@ python tools/agents.py --root ../your-project context researcher
 python tools/agents.py --root ../your-project check
 ```
 
-`init` 默认建立 `architect`、`developer`、`reviewer` 的通用骨架，可以用 `init --roles frontend backend qa` 自定义。它保留所有已有文件，不会覆盖已有 `AGENTS.md`；如果入口已存在，请手动合并[入口模板](docs/entrypoint.md)。示例角色的专业说明与技能位于本仓库 `.AGENTS/` 中，初始化骨架不自动复制这些项目特定内容。
+`init` 默认建立 `developer`、`reviewer` 的通用骨架，可以用 `init --roles frontend backend qa` 自定义。它保留所有已有文件，不会覆盖已有 `AGENTS.md`；如果入口已存在，请手动合并[入口模板](docs/entrypoint.md)。示例角色的专业说明与技能位于本仓库 `.AGENTS/` 中，初始化骨架不自动复制这些项目特定内容。
 
 新项目还应将 `.AGENTS/*/local/` 加入自己的 `.gitignore`，用来保存不参与共享的临时上下文。忽略规则不是秘密管理机制。
 
 ## 工作流程
 
 1. 根据任务选择角色，读取公共入口、共享事实和该角色的职责及记忆摘要。
-2. 根据任务读取相关 skill 和历史记录；不要默认加载所有角色全部历史。
-3. 完成任务并验证，将值得复用的事实与证据写入独立记录。
-4. 更新该角色摘要中的索引；跨角色事实经核对后放入共享上下文。
+2. 根据任务读取相关 skill，保持当前角色的记忆简短、有效。
+3. 完成任务并验证，将值得复用的事实与证据写入该角色的 `memory/MEMORY.md`。
+4. 通过评审协调并发的记忆修改；跨角色事实经核对后放入共享上下文。
 5. 通过 Git 提交和评审交接。过期知识标记为 `superseded`，不要继续作为当前事实使用。
 
 例如让你的 agent 执行：
 
-> 以 developer 角色修复当前问题。先读 AGENTS.md、.AGENTS/_shared/CONTEXT.md、.AGENTS/developer/AGENTS.md 和 memory/MEMORY.md。按需读取 focused-change 技能。完成后将有证据的复用经验记录到该角色 memory/records/，并说明验证结果。
+> 以 developer 角色修复当前问题。先读 AGENTS.md、.AGENTS/_shared/CONTEXT.md、.AGENTS/developer/AGENTS.md 和 memory/MEMORY.md。按需读取 focused-change 技能。完成后将有证据的复用经验记录到该角色 memory/MEMORY.md，并说明验证结果。
 
-也可以将 `context` 的标准输出传给客户端。该输出只是供读取的文本，不会自动注入模型、安装技能或执行其中的命令。默认只输出入口与摘要，附技能/记录清单；使用 `--skill NAME`、`--record FILE.md`（可重复）才加入选中的正文。
+也可以将 `context` 的标准输出传给客户端。该输出只是供读取的文本，不会自动注入模型、安装技能或执行其中的命令。默认只输出入口与摘要，附技能清单；使用 `--skill NAME`（可重复）才加入选中的技能正文。
 
 ## 文档与边界
 

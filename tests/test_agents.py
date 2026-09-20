@@ -35,7 +35,8 @@ class AgentsTest(unittest.TestCase):
     def test_initialize_and_check_real_cli(self):
         result = self.run_cli("init")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(agents.check(self.root), ["architect", "developer", "reviewer"])
+        self.assertEqual(agents.check(self.root), ["developer", "reviewer"])
+        self.assertEqual([p.name for p in (self.root / ".AGENTS/developer/memory").iterdir()], ["MEMORY.md"])
         self.assertEqual(self.run_cli("check").returncode, 0)
 
     def test_init_preserves_existing_bytes_and_custom_role(self):
@@ -57,15 +58,15 @@ class AgentsTest(unittest.TestCase):
         self.skill("developer")
         self.skill("reviewer", body="OTHER_ROLE_SKILL")
         self.put(".AGENTS/reviewer/memory/MEMORY.md", "OTHER_ROLE_MEMORY")
-        self.put(".AGENTS/developer/memory/records/finding.md", "SELECTED_RECORD_BODY")
+        self.put(".AGENTS/developer/memory/MEMORY.md", "SELECTED_ROLE_MEMORY")
         default = agents.context(self.root, "developer")
         self.assertIn("example: A useful test skill.", default)
-        self.assertIn("finding.md", default)
-        for marker in ("SELECTED_SKILL_BODY", "SELECTED_RECORD_BODY", "OTHER_ROLE_MEMORY", "OTHER_ROLE_SKILL"):
+        self.assertIn("SELECTED_ROLE_MEMORY", default)
+        for marker in ("SELECTED_SKILL_BODY", "OTHER_ROLE_MEMORY", "OTHER_ROLE_SKILL"):
             self.assertNotIn(marker, default)
-        selected = agents.context(self.root, "developer", ["example"], ["finding.md"])
+        selected = agents.context(self.root, "developer", ["example"])
         self.assertIn("SELECTED_SKILL_BODY", selected)
-        self.assertIn("SELECTED_RECORD_BODY", selected)
+        self.assertIn("SELECTED_ROLE_MEMORY", selected)
         self.assertNotIn("OTHER_ROLE_MEMORY", selected)
         self.assertNotIn("OTHER_ROLE_SKILL", selected)
 
@@ -75,10 +76,9 @@ class AgentsTest(unittest.TestCase):
                 agents.init(self.root, ["developer", name])
         self.assertEqual(list(self.root.iterdir()), [])
 
-    def test_missing_role_skill_and_record_are_errors(self):
+    def test_missing_role_and_skill_are_errors(self):
         agents.init(self.root, ["developer"])
-        for args in (("context", "missing"), ("context", "developer", "--skill", "missing"),
-                     ("context", "developer", "--record", "../MEMORY.md")):
+        for args in (("context", "missing"), ("context", "developer", "--skill", "missing")):
             result = self.run_cli(*args)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("error:", result.stderr)
@@ -102,9 +102,9 @@ class AgentsTest(unittest.TestCase):
             with self.subTest(content=content), self.assertRaises(ValueError):
                 agents.check(self.root)
 
-    def test_empty_records_fail_check(self):
+    def test_empty_memory_fails_check(self):
         agents.init(self.root, ["developer"])
-        self.put(".AGENTS/developer/memory/records/empty.md", "")
+        self.put(".AGENTS/developer/memory/MEMORY.md", "")
         with self.assertRaises(ValueError):
             agents.check(self.root)
 
@@ -140,7 +140,7 @@ class AgentsTest(unittest.TestCase):
             result = subprocess.run([sys.executable, str(copied), "--root", str(target), "init"],
                                     cwd=folder, capture_output=True, text=True, encoding="utf-8")
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(len(agents.check(target)), 3)
+            self.assertEqual(agents.check(target), ["developer", "reviewer"])
 
     @unittest.skipUnless(sys.platform == "win32", "Windows short-path aliases")
     def test_windows_short_path_root(self):

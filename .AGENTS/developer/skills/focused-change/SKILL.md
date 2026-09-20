@@ -11,9 +11,9 @@ Preserve these contracts where relevant to the change:
 
 - Initialization never overwrites a user's existing file.
 - Selecting one role does not include another role's memory or skill bodies.
-- Only explicitly selected skill and record bodies enter assembled context.
+- Only explicitly selected skill bodies enter assembled context; role memory comes from `memory/MEMORY.md`.
 - Names and filesystem links cannot redirect operations outside the selected project.
 
 Run `python -m unittest discover -s tests -v` and `python tools/agents.py check`. Add a behavior test for a changed contract or demonstrated regression; avoid assertions that merely copy implementation details.
 
-Report observable behavior and remaining limitations. Store reusable, verified findings in role memory with evidence rather than copying the full session log.
+Report observable behavior and remaining limitations. Store reusable, verified findings in `memory/MEMORY.md` with evidence rather than copying the full session log.

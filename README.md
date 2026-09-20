@@ -16,7 +16,7 @@ The [official AGENTS.md guide](https://agents.md/) describes it as project instr
 | --- | --- | --- |
 | Architecture, implementation, and review touch the same code | File scope is not responsibility scope | A separate `AGENTS.md` for each role |
 | Every session rediscovers the project | A Markdown entrypoint has no automatic memory writeback, expiry, or archiving | Memory with sources, dates, and status |
-| Every lesson goes into the entrypoint | Irrelevant history consumes context and makes rules harder to maintain | Summaries with records and skills loaded on demand |
+| Every lesson goes into the entrypoint | Irrelevant history consumes context and makes rules harder to maintain | Concise role memory and skills loaded on demand |
 | Multiple agents work concurrently | Text conventions provide no scheduling, file locks, or transactions | Ownership and handoff conventions, used with Git/worktrees |
 | Methods need to be reused | Project instructions alone do not provide a complete skill management workflow | Separate `skills/<name>/SKILL.md` files |
 | Clients change | Discovery and instruction precedence depend on the client | Explicit reading or CLI context assembly |
@@ -31,14 +31,12 @@ your-project/
 ├── .AGENTS/
 │   ├── _shared/
 │   │   └── CONTEXT.md             # Confirmed facts shared across roles
-│   ├── architect/
-│   │   ├── AGENTS.md                # Responsibilities, boundaries, handoffs
+│   ├── developer/
+│   │   ├── AGENTS.md              # Responsibilities, boundaries, handoffs
 │   │   ├── memory/
-│   │   │   ├── MEMORY.md          # Current summary and record index
-│   │   │   └── records/*.md       # Decisions and lessons, read on demand
+│   │   │   └── MEMORY.md          # Current facts, decisions, and lessons
 │   │   └── skills/
 │   │       └── decision-record/SKILL.md
-│   ├── developer/                # Same structure
 │   └── reviewer/                 # Same structure
 └── tools/agents.py                # Optional, single-file tool
 ```
@@ -68,23 +66,23 @@ python tools/agents.py --root ../your-project context researcher
 python tools/agents.py --root ../your-project check
 ```
 
-`init` creates generic skeletons for `architect`, `developer`, and `reviewer` by default. Customize them with `init --roles frontend backend qa`. It preserves all existing files, including `AGENTS.md`. If the entrypoint already exists, manually merge the [entrypoint template (Chinese)](docs/entrypoint.md). The specialized role instructions and skills in this repository's `.AGENTS/` are examples; initialization does not copy that project-specific content.
+`init` creates generic skeletons for `developer` and `reviewer` by default. Customize them with `init --roles frontend backend qa`. It preserves all existing files, including `AGENTS.md`. If the entrypoint already exists, manually merge the [entrypoint template (Chinese)](docs/entrypoint.md). The specialized role instructions and skills in this repository's `.AGENTS/` are examples; initialization does not copy that project-specific content.
 
 Add `.AGENTS/*/local/` to your project's `.gitignore` for temporary context that should not be shared. Ignore rules are not a secrets management mechanism.
 
 ## Workflow
 
 1. Choose a role for the task. Read the project entrypoint, shared facts, role responsibilities, and memory summary.
-2. Read relevant skills and historical records as needed. Do not load every role's entire history by default.
-3. Complete and verify the task. Write reusable findings and their evidence into separate records.
-4. Update the role's summary index. Move verified cross-role facts into shared context.
+2. Read relevant skills as needed. Keep the selected role's memory concise and current.
+3. Complete and verify the task. Write reusable findings and their evidence into the role's `memory/MEMORY.md`.
+4. Reconcile concurrent memory edits through review. Move verified cross-role facts into shared context.
 5. Hand off through Git commits and review. Mark replaced knowledge as `superseded` instead of continuing to treat it as current fact.
 
 For example, ask your agent:
 
-> Fix the current issue as the developer role. First read AGENTS.md, .AGENTS/_shared/CONTEXT.md, .AGENTS/developer/AGENTS.md, and that role's memory/MEMORY.md. Read the focused-change skill as needed. After completing the task, record reusable findings with evidence in the role's memory/records/ and report the verification results.
+> Fix the current issue as the developer role. First read AGENTS.md, .AGENTS/_shared/CONTEXT.md, .AGENTS/developer/AGENTS.md, and that role's memory/MEMORY.md. Read the focused-change skill as needed. After completing the task, record reusable findings with evidence in the role's memory/MEMORY.md and report the verification results.
 
-You can also pass the standard output of `context` to your client. It is text for the client to read; it does not automatically inject context into a model, install skills, or execute commands. By default it includes entry files and summaries, followed by skill and record inventories. Use `--skill NAME` and `--record FILE.md` (repeatable) to include selected bodies.
+You can also pass the standard output of `context` to your client. It is text for the client to read; it does not automatically inject context into a model, install skills, or execute commands. By default it includes entry files and summaries, followed by the skill inventory. Use `--skill NAME` (repeatable) to include selected skill bodies.
 
 ## Documentation and boundaries
 
