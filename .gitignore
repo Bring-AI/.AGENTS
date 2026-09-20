@@ -1,0 +1,5 @@
+__pycache__/
+*.py[cod]
+.venv/
+.AGENTS/*/local/
+.AGENTS/_shared/local/
